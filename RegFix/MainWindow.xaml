@@ -1,0 +1,287 @@
+<Window x:Class="RegFix.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="RegFix · Windows 软件迁移助手"
+        Height="820" Width="1240" MinHeight="690" MinWidth="960"
+        WindowStartupLocation="CenterScreen"
+        Background="#F3F5F8"
+        FontFamily="Microsoft YaHei UI">
+    <Window.Resources>
+        <Style TargetType="Button" x:Key="PrimaryButton">
+            <Setter Property="Background" Value="#155EEF" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Padding" Value="16,9" />
+            <Setter Property="Margin" Value="0,0,8,0" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Cursor" Value="Hand" />
+        </Style>
+        <Style TargetType="Button" x:Key="SecondaryButton">
+            <Setter Property="Background" Value="#FFFFFF" />
+            <Setter Property="Foreground" Value="#344054" />
+            <Setter Property="BorderBrush" Value="#D0D5DD" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Padding" Value="14,8" />
+            <Setter Property="Margin" Value="0,0,8,0" />
+            <Setter Property="Cursor" Value="Hand" />
+        </Style>
+        <Style TargetType="DataGrid">
+            <Setter Property="Background" Value="White" />
+            <Setter Property="BorderBrush" Value="#EAECF0" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="RowBackground" Value="White" />
+            <Setter Property="AlternatingRowBackground" Value="#F9FAFB" />
+            <Setter Property="CanUserAddRows" Value="False" />
+            <Setter Property="CanUserDeleteRows" Value="False" />
+            <Setter Property="IsReadOnly" Value="True" />
+            <Setter Property="GridLinesVisibility" Value="Horizontal" />
+            <Setter Property="HorizontalGridLinesBrush" Value="#EAECF0" />
+            <Setter Property="HeadersVisibility" Value="Column" />
+            <Setter Property="AutoGenerateColumns" Value="False" />
+            <Setter Property="EnableRowVirtualization" Value="True" />
+        </Style>
+        <Style TargetType="DataGridColumnHeader">
+            <Setter Property="Background" Value="#F9FAFB" />
+            <Setter Property="Foreground" Value="#475467" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Padding" Value="10,9" />
+            <Setter Property="BorderBrush" Value="#EAECF0" />
+            <Setter Property="BorderThickness" Value="0,0,0,1" />
+        </Style>
+        <Style TargetType="DataGridCell">
+            <Setter Property="Padding" Value="9,7" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+        </Style>
+        <Style TargetType="TabItem">
+            <Setter Property="Padding" Value="18,10" />
+            <Setter Property="Foreground" Value="#475467" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="22">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" Background="#101828" CornerRadius="12" Padding="22" Margin="0,0,0,16">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Border Width="46" Height="46" CornerRadius="12" Background="#155EEF" VerticalAlignment="Center">
+                    <TextBlock Text="RF" Foreground="White" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                </Border>
+                <StackPanel Grid.Column="1" Margin="14,0,0,0" VerticalAlignment="Center">
+                    <TextBlock Text="RegFix 软件迁移助手" Foreground="White" FontSize="21" FontWeight="SemiBold" />
+                    <TextBlock Text="重装前采集 · 重装后匹配 · 按项恢复" Foreground="#D0D5DD" FontSize="12" Margin="0,4,0,0" />
+                </StackPanel>
+                <Border Grid.Column="2" Background="#1D2939" CornerRadius="16" Padding="11,6" VerticalAlignment="Center">
+                    <TextBlock Text="预览版 0.1" Foreground="#D0D5DD" FontSize="11" />
+                </Border>
+            </Grid>
+        </Border>
+
+        <TabControl Grid.Row="1" Background="Transparent" BorderThickness="0">
+            <TabItem Header="重装前 · 采集">
+                <Grid Margin="2,12,2,2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <Border Grid.Row="0" Background="White" BorderBrush="#EAECF0" BorderThickness="1" CornerRadius="10" Padding="16" Margin="0,0,0,12">
+                        <StackPanel>
+                            <TextBlock Text="先把迁移包保存到不会被重装的盘或移动硬盘" FontSize="15" FontWeight="SemiBold" Foreground="#101828" />
+                            <TextBlock Text="采集已安装软件、开始菜单快捷方式、第三方服务配置和默认应用关联。迁移包是可读 JSON，会包含软件路径及服务账户名称；不包含账户密码。" TextWrapping="Wrap" Foreground="#667085" FontSize="12" Margin="0,6,0,0" />
+                        </StackPanel>
+                    </Border>
+
+                    <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,8">
+                        <Button x:Name="CaptureScanButton" Content="扫描当前系统" Style="{StaticResource PrimaryButton}" Click="CaptureScan_Click" />
+                        <Button x:Name="AddCaptureRootButton" Content="补充扫描软件目录…" Style="{StaticResource SecondaryButton}" Click="AddCaptureRoot_Click" />
+                        <Button x:Name="RemoveCaptureRootButton" Content="移除所选目录" Style="{StaticResource SecondaryButton}" Click="RemoveCaptureRoot_Click" />
+                        <Button x:Name="SavePackageButton" Content="保存迁移包…" Style="{StaticResource PrimaryButton}" Click="SavePackage_Click" IsEnabled="False" />
+                    </StackPanel>
+
+                    <Border Grid.Row="2" Background="#EFF8FF" BorderBrush="#B2DDFF" BorderThickness="1" CornerRadius="8" Padding="10" Margin="0,0,0,10">
+                        <StackPanel>
+                            <TextBlock Text="补充扫描目录（可选）" FontWeight="SemiBold" Foreground="#175CD3" FontSize="12" />
+                            <TextBlock Text="仅扫描你选择的目录中的 .exe 文件；扫描结果作为候选清单，不会执行这些程序。" Foreground="#175CD3" FontSize="11" Margin="0,3,0,6" />
+                            <ListBox x:Name="CaptureRootsList" ItemsSource="{Binding CaptureRoots}" Height="48" BorderThickness="0" Background="Transparent" />
+                        </StackPanel>
+                    </Border>
+
+                    <DataGrid x:Name="CaptureSoftwareGrid" Grid.Row="3" ItemsSource="{Binding CapturedSoftware}" IsReadOnly="True" AlternationCount="2">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="软件名称" Binding="{Binding DisplayName}" Width="220" />
+                            <DataGridTextColumn Header="发布者" Binding="{Binding Publisher}" Width="150" />
+                            <DataGridTextColumn Header="版本" Binding="{Binding DisplayVersion}" Width="100" />
+                            <DataGridTextColumn Header="安装目录" Binding="{Binding InstallLocation}" Width="2*" />
+                            <DataGridTextColumn Header="启动文件" Binding="{Binding LaunchTarget}" Width="2*" />
+                            <DataGridTextColumn Header="来源" Binding="{Binding Source}" Width="150" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                    <Border Grid.Row="4" Background="White" BorderBrush="#EAECF0" BorderThickness="1" CornerRadius="8" Padding="10" Margin="0,10,0,0">
+                        <TextBlock x:Name="CaptureSummaryText" Text="尚未扫描。" Foreground="#475467" FontSize="12" TextWrapping="Wrap" />
+                    </Border>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="重装后 · 恢复">
+                <Grid Margin="2,12,2,2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <Border Grid.Row="0" Background="White" BorderBrush="#EAECF0" BorderThickness="1" CornerRadius="10" Padding="16" Margin="0,0,0,12">
+                        <StackPanel>
+                            <TextBlock Text="选择迁移包，再扫描软件所在目录" FontSize="15" FontWeight="SemiBold" Foreground="#101828" />
+                            <TextBlock x:Name="LoadedPackageText" Text="尚未打开迁移包。" TextWrapping="Wrap" Foreground="#667085" FontSize="12" Margin="0,6,0,0" />
+                            <TextBlock Text="扫描只读取文件并计算 SHA-256，不会运行迁移包中记录的程序。开始菜单快捷方式需逐项勾选后恢复。" TextWrapping="Wrap" Foreground="#667085" FontSize="12" Margin="0,4,0,0" />
+                        </StackPanel>
+                    </Border>
+
+                    <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,8">
+                        <Button x:Name="OpenPackageButton" Content="打开迁移包…" Style="{StaticResource SecondaryButton}" Click="OpenPackage_Click" />
+                        <Button x:Name="AddRestoreRootButton" Content="添加扫描目录…" Style="{StaticResource SecondaryButton}" Click="AddRestoreRoot_Click" />
+                        <Button x:Name="RemoveRestoreRootButton" Content="移除所选目录" Style="{StaticResource SecondaryButton}" Click="RemoveRestoreRoot_Click" />
+                        <Button x:Name="ScanRestoreButton" Content="扫描并匹配" Style="{StaticResource PrimaryButton}" Click="ScanRestore_Click" IsEnabled="False" />
+                        <Button x:Name="RestoreShortcutsButton" Content="恢复选中快捷方式" Style="{StaticResource PrimaryButton}" Click="RestoreShortcuts_Click" IsEnabled="False" />
+                    </StackPanel>
+
+                    <Border Grid.Row="2" Background="#F9FAFB" BorderBrush="#EAECF0" BorderThickness="1" CornerRadius="8" Padding="9" Margin="0,0,0,10">
+                        <DockPanel>
+                            <Button DockPanel.Dock="Right" Content="打开默认应用设置" Style="{StaticResource SecondaryButton}" Click="OpenDefaultApps_Click" Margin="8,0,0,0" />
+                            <StackPanel>
+                                <TextBlock Text="扫描目录" FontWeight="SemiBold" Foreground="#344054" FontSize="12" />
+                                <ListBox x:Name="RestoreRootsList" ItemsSource="{Binding RestoreRoots}" Height="48" BorderThickness="0" Background="Transparent" Margin="0,3,0,0" />
+                            </StackPanel>
+                        </DockPanel>
+                    </Border>
+
+                    <TabControl Grid.Row="3" Background="White">
+                        <TabItem Header="软件匹配">
+                            <DataGrid x:Name="RestoreSoftwareGrid" ItemsSource="{Binding RestoredSoftware}" IsReadOnly="True" AlternationCount="2">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="软件名称" Binding="{Binding DisplayName}" Width="220" />
+                                    <DataGridTextColumn Header="发布者" Binding="{Binding Publisher}" Width="150" />
+                                    <DataGridTextColumn Header="版本" Binding="{Binding DisplayVersion}" Width="100" />
+                                    <DataGridTextColumn Header="旧路径" Binding="{Binding OriginalPath}" Width="2*" />
+                                    <DataGridTextColumn Header="匹配路径" Binding="{Binding ResolvedPath}" Width="2*" />
+                                    <DataGridTextColumn Header="结果" Binding="{Binding Status}" Width="190" />
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </TabItem>
+                        <TabItem Header="程序和功能">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <DockPanel Grid.Row="0" Margin="10,8">
+                                    <Button x:Name="DeleteUninstallEntriesButton" DockPanel.Dock="Right" Content="撤销选中 RegFix 项" Style="{StaticResource SecondaryButton}" Click="DeleteUninstallEntries_Click" IsEnabled="False" Margin="8,0,0,0" />
+                                    <Button x:Name="RestoreUninstallEntriesButton" DockPanel.Dock="Right" Content="添加选中卸载列表项" Style="{StaticResource PrimaryButton}" Click="RestoreUninstallEntries_Click" IsEnabled="False" Margin="8,0,0,0" />
+                                    <TextBlock Text="仅重建当前用户的卸载列表显示信息；不会恢复 MSI 修复状态，也不会运行卸载程序。" Foreground="#667085" VerticalAlignment="Center" TextWrapping="Wrap" />
+                                </DockPanel>
+                                <DataGrid x:Name="RestoreUninstallGrid" Grid.Row="1" ItemsSource="{Binding RestoredUninstallEntries}" IsReadOnly="False" CanUserAddRows="False" CanUserDeleteRows="False" AlternationCount="2">
+                                    <DataGrid.Columns>
+                                        <DataGridCheckBoxColumn Header="添加" Binding="{Binding IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="55" />
+                                        <DataGridTextColumn Header="软件名称" Binding="{Binding DisplayName}" IsReadOnly="True" Width="200" />
+                                        <DataGridTextColumn Header="发布者" Binding="{Binding Publisher}" IsReadOnly="True" Width="140" />
+                                        <DataGridTextColumn Header="安装目录" Binding="{Binding InstallLocation}" IsReadOnly="True" Width="1.5*" />
+                                        <DataGridTextColumn Header="卸载程序路径（可编辑）" Binding="{Binding UninstallerPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="1.5*" />
+                                        <DataGridTextColumn Header="卸载参数" Binding="{Binding UninstallArguments}" IsReadOnly="True" Width="1.5*" />
+                                        <DataGridTextColumn Header="匹配结果" Binding="{Binding Status}" IsReadOnly="True" Width="230" />
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </Grid>
+                        </TabItem>
+                        <TabItem Header="开始菜单快捷方式">
+                            <DataGrid x:Name="RestoreShortcutGrid" ItemsSource="{Binding RestoredShortcuts}" IsReadOnly="False" CanUserAddRows="False" CanUserDeleteRows="False" AlternationCount="2">
+                                <DataGrid.Columns>
+                                    <DataGridCheckBoxColumn Header="恢复" Binding="{Binding IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="60" />
+                                    <DataGridTextColumn Header="快捷方式" Binding="{Binding Name}" IsReadOnly="True" Width="220" />
+                                    <DataGridTextColumn Header="新程序路径（可编辑）" Binding="{Binding TargetPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="2*" />
+                                    <DataGridTextColumn Header="启动参数" Binding="{Binding Original.Arguments}" IsReadOnly="True" Width="1.5*" />
+                                    <DataGridTextColumn Header="匹配结果" Binding="{Binding Status}" IsReadOnly="True" Width="250" />
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </TabItem>
+                        <TabItem Header="服务">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <DockPanel Grid.Row="0" Margin="10,8">
+                                    <Button x:Name="DeleteServicesButton" DockPanel.Dock="Right" Content="撤销选中 RegFix 服务" Style="{StaticResource SecondaryButton}" Click="DeleteServices_Click" IsEnabled="False" Margin="8,0,0,0" />
+                                    <Button x:Name="RestoreServicesButton" DockPanel.Dock="Right" Content="恢复选中服务配置" Style="{StaticResource PrimaryButton}" Click="RestoreServices_Click" IsEnabled="False" Margin="8,0,0,0" />
+                                    <TextBlock Text="仅支持 Win32 服务和 Windows 内置服务账户；驱动、自定义账户及缺少指纹的项目需安装器修复。服务创建后保持停止；撤销仅作用于 RegFix 创建且已停止的服务。" Foreground="#667085" VerticalAlignment="Center" TextWrapping="Wrap" />
+                                </DockPanel>
+                                <DataGrid x:Name="RestoreServicesGrid" Grid.Row="1" ItemsSource="{Binding RestoredServices}" IsReadOnly="False" CanUserAddRows="False" CanUserDeleteRows="False" AlternationCount="2">
+                                    <DataGrid.Columns>
+                                        <DataGridCheckBoxColumn Header="恢复" Binding="{Binding IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="55" />
+                                        <DataGridTextColumn Header="服务名" Binding="{Binding Name}" IsReadOnly="True" Width="145" />
+                                        <DataGridTextColumn Header="显示名称" Binding="{Binding DisplayName}" IsReadOnly="True" Width="190" />
+                                        <DataGridTextColumn Header="服务程序" Binding="{Binding ExecutablePath}" IsReadOnly="True" Width="2*" />
+                                        <DataGridTextColumn Header="启动参数" Binding="{Binding Arguments}" IsReadOnly="True" Width="1.5*" />
+                                        <DataGridTextColumn Header="运行账户" Binding="{Binding AccountName}" IsReadOnly="True" Width="150" />
+                                        <DataGridTextColumn Header="启动类型" Binding="{Binding StartupType}" IsReadOnly="True" Width="80" />
+                                        <DataGridTextColumn Header="匹配结果" Binding="{Binding Status}" IsReadOnly="True" Width="230" />
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </Grid>
+                        </TabItem>
+                        <TabItem Header="文件关联">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <DockPanel Grid.Row="0" Margin="10,8">
+                                    <Button x:Name="DeleteAssociationButton" DockPanel.Dock="Right" Content="撤销选中 RegFix 候选" Style="{StaticResource SecondaryButton}" Click="DeleteAssociations_Click" IsEnabled="False" Margin="8,0,0,0" />
+                                    <Button x:Name="RegisterAssociationButton" DockPanel.Dock="Right" Content="注册选中关联候选" Style="{StaticResource PrimaryButton}" Click="RegisterAssociations_Click" IsEnabled="False" Margin="8,0,0,0" />
+                                    <TextBlock Text="只登记该软件曾处理的文件类型/协议，不更改默认应用；完成后请在 Windows 设置中由用户选择。" Foreground="#667085" VerticalAlignment="Center" TextWrapping="Wrap" />
+                                </DockPanel>
+                                <DataGrid x:Name="RestoreAssociationsGrid" Grid.Row="1" ItemsSource="{Binding RestoredAssociations}" IsReadOnly="False" CanUserAddRows="False" CanUserDeleteRows="False" AlternationCount="2">
+                                    <DataGrid.Columns>
+                                        <DataGridCheckBoxColumn Header="注册" Binding="{Binding IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="55" />
+                                        <DataGridTextColumn Header="应用名称" Binding="{Binding ApplicationName}" IsReadOnly="True" Width="190" />
+                                        <DataGridTextColumn Header="文件类型 / 协议" Binding="{Binding Identifiers}" IsReadOnly="True" Width="2*" />
+                                        <DataGridTextColumn Header="应用程序路径（可编辑）" Binding="{Binding ExecutablePath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="2*" />
+                                        <DataGridTextColumn Header="匹配结果" Binding="{Binding Status}" IsReadOnly="True" Width="230" />
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </Grid>
+                        </TabItem>
+                    </TabControl>
+
+                    <Border Grid.Row="4" Background="White" BorderBrush="#EAECF0" BorderThickness="1" CornerRadius="8" Padding="10" Margin="0,10,0,0">
+                        <TextBlock x:Name="RestoreSummaryText" Text="打开迁移包并添加扫描目录后，可以开始匹配。" Foreground="#475467" FontSize="12" TextWrapping="Wrap" />
+                    </Border>
+                </Grid>
+            </TabItem>
+        </TabControl>
+
+        <Border Grid.Row="2" Background="#FFFFFF" BorderBrush="#EAECF0" BorderThickness="1" CornerRadius="8" Padding="10,7" Margin="0,12,0,0">
+            <DockPanel>
+                <TextBlock DockPanel.Dock="Right" Text="RegFix · 本地处理" Foreground="#98A2B3" FontSize="11" />
+                <TextBlock x:Name="StatusText" Text="就绪" Foreground="#475467" FontSize="11" />
+            </DockPanel>
+        </Border>
+    </Grid>
+</Window>
